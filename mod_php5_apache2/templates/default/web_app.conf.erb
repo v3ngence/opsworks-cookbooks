@@ -45,6 +45,10 @@
   <% if @params[:mounted_at] -%>
   AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
   <% end -%>
+  
+  # if using Amazon ELB with SSL Termination
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule !/status https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
 
   <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:local_config] %>*
