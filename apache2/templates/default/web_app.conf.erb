@@ -46,5 +46,9 @@
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
+  
+  # if using Amazon ELB with SSL Termination
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule !/status https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
 
 </VirtualHost>
